@@ -1,6 +1,7 @@
 '''by lyuwenyu
 '''
 
+from unicodedata import name
 import torch 
 import torchvision
 
@@ -49,7 +50,9 @@ def export_onnx(name='yolov8n'):
                       dynamic_axes=dynamic_axes)
 
     data = np.random.rand(1, 3, 640, 640).astype(np.float32)
-    sess = ort.InferenceSession(f'{name}.onnx')
+    # sess = ort.InferenceSession(f'{name}.onnx')
+    providers = ['CUDAExecutionProvider', 'CPUExecutionProvider']  # ✅ 优先使用GPU
+    sess = ort.InferenceSession(f'{name}.onnx', providers=providers)
     _ = sess.run(output_names=None, input_feed={'image': data})
 
 
