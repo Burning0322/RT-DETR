@@ -10,11 +10,20 @@ import src.misc.dist as dist
 from src.core import YAMLConfig 
 from src.solver import TASKS
 
+import torch
+
 
 def main(args, ) -> None:
     '''main
     '''
     dist.init_distributed()
+
+    print(">>> torch.cuda.is_available():", torch.cuda.is_available())
+    if torch.cuda.is_available():
+        print(">>> Using GPU:", torch.cuda.get_device_name(0))
+    else:
+        print(">>> Using CPU")
+
     if args.seed is not None:
         dist.set_seed(args.seed)
 
